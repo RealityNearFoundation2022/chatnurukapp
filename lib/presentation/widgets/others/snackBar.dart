@@ -14,13 +14,7 @@ SnackBar rnSnackBar(String message, bool isError) {
       ),
     ),
     duration: const Duration(seconds: 3),
-    backgroundColor: isError ? Colors.red :greenPrimary,
+    backgroundColor: isError ? Colors.red : greenPrimary,
     elevation: 30,
   );
 }
-
- showSnackBar(BuildContext context, String message, bool isError) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      rnSnackBar(message, isError),
-    );
-  }

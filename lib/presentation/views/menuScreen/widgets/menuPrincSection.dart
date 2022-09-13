@@ -29,6 +29,7 @@ class _MenuPrincSectionState extends State<MenuPrincSection> {
   @override
   void initState() {
     super.initState();
+
     getPersistData('username').then((value) => {
           setState(() {
             username = value;

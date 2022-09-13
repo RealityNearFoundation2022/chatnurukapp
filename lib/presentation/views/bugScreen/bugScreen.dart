@@ -10,7 +10,7 @@ import 'package:reality_near/generated/l10n.dart';
 import 'package:reality_near/presentation/widgets/dialogs/infoDialog.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../widgets/others/snackBar.dart';
+// import '../../widgets/others/snackBar.dart';
 
 class BugScreen extends StatefulWidget {
   //Variables
@@ -225,7 +225,7 @@ class _BugScreenState extends State<BugScreen> {
                 ),
               ),
               onPressed: () {
-                if(_controller.text.isNotEmpty) {
+                if (_controller.text.isNotEmpty) {
                   ReportModel report = ReportModel(
                     title: "",
                     category: catergory,
@@ -234,9 +234,7 @@ class _BugScreenState extends State<BugScreen> {
                     status: 0,
                   );
                   _createReport(report);
-                } else {
-                  showSnackBar(context, S.current.DatosIncompletos, true);
-                }
+                } else {}
               },
               child: Text(
                 S.current.Enviar,

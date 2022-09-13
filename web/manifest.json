@@ -1,6 +1,6 @@
 {
-    "name": "reality_near",
-    "short_name": "reality_near",
+    "name": "app_movil",
+    "short_name": "app_movil",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

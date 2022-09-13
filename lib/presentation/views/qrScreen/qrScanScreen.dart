@@ -32,20 +32,23 @@ class _QrScannScreenState extends State<QrScannScreen> {
     });
     String cuponId = result.code.split(' | ')[0];
     String ownerId = result.code.split(' | ')[1];
-    await RedeemCuponUseCase(cuponId,ownerId).call().then((value) => value.fold(
-        (l) => {
-          setState(() {
-            _loadingValidate = false;
-            errorMessage= S.current.CuponInvalido;
-          }),
-        },
-        (r) => {
-          setState(() {
-                cupon = r;
-                _loadingValidate = false;
-              })
-            }));
+    await RedeemCuponUseCase(cuponId, ownerId)
+        .call()
+        .then((value) => value.fold(
+            (l) => {
+                  setState(() {
+                    _loadingValidate = false;
+                    errorMessage = S.current.CuponInvalido;
+                  }),
+                },
+            (r) => {
+                  setState(() {
+                    cupon = r;
+                    _loadingValidate = false;
+                  })
+                }));
   }
+
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   Barcode result;
   QRViewController controller;
@@ -60,6 +63,7 @@ class _QrScannScreenState extends State<QrScannScreen> {
     }
     controller.resumeCamera();
   }
+
   @override
   void dispose() {
     controller?.dispose();
@@ -110,9 +114,11 @@ class _QrScannScreenState extends State<QrScannScreen> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: result == null ? _qrScan()
-                  : _loadingValidate ? _qrValidateLoading()
-              : _validateScreen(cupon.redeemed??false),
+              child: result == null
+                  ? _qrScan()
+                  : _loadingValidate
+                      ? _qrValidateLoading()
+                      : _validateScreen(cupon.redeemed ?? false),
               // child: _qrValidateLoading(),
             ),
           ),
@@ -123,8 +129,11 @@ class _QrScannScreenState extends State<QrScannScreen> {
               child: Text(
                 result == null
                     ? 'Enfoca el codigo QR para validar'
-                    : _loadingValidate ? 'Validando...'
-                    : errorMessage.isNotEmpty ? errorMessage :'',
+                    : _loadingValidate
+                        ? 'Validando...'
+                        : errorMessage.isNotEmpty
+                            ? errorMessage
+                            : '',
                 // 'Validando...',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.sourceSansPro(
@@ -150,7 +159,7 @@ class _QrScannScreenState extends State<QrScannScreen> {
     );
   }
 
-  _validateScreen(bool isValidate ) {
+  _validateScreen(bool isValidate) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -203,22 +212,13 @@ class _QrScannScreenState extends State<QrScannScreen> {
       overlayMargin: const EdgeInsets.all(40),
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
-      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+      // onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
     );
   }
 
-  void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
-    log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
-    if (!p) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('no Permission')),
-      );
-    }
-  }
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-
       setState(() {
         print('Scanned data: ${scanData.code}');
         result = scanData;

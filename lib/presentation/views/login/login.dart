@@ -109,8 +109,7 @@ class Login extends StatelessWidget {
                             //creamos un evento en el bloc
                             if (_emailController.text.isEmpty ||
                                 _passwordController.text.isEmpty) {
-                              showSnackBar(
-                                  context, S.current.DatosIncompletos, true);
+                              return;
                             } else {
                               BlocProvider.of<UserBloc>(context, listen: false)
                                   .add(UserLoginEmailEvent(

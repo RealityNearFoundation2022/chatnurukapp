@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:reality_near/presentation/views/AR/arview.dart';
 import 'package:reality_near/presentation/views/FriendsScreen/chatSoonScreen.dart';
 import 'package:reality_near/presentation/views/FriendsScreen/friendsScreen.dart';
 import 'package:reality_near/presentation/views/bugScreen/bugScreen.dart';
@@ -34,7 +33,7 @@ final Map<String, WidgetBuilder> routes = {
   WalletScreen.routeName: (context) => const WalletScreen(),
   userScreen.routeName: (context) => userScreen(),
   RegisterScreen.routeName: (context) => const RegisterScreen(),
-  ReceiveScreen.routeName: (context) =>  ReceiveScreen(),
+  ReceiveScreen.routeName: (context) => ReceiveScreen(),
   TransferScreen.routeName: (context) => TransferScreen(),
   TransferDetail.routeName: (context) => TransferDetail(),
   UserProfile.routeName: (context) => UserProfile(),
@@ -42,5 +41,4 @@ final Map<String, WidgetBuilder> routes = {
   QrViewScreen.routeName: (context) => const QrViewScreen(),
   QrScannScreen.routeName: (context) => const QrScannScreen(),
   chatSoonScreen.routeName: (context) => const chatSoonScreen(),
-  ARSection.routeName: (context) => const ARSection(),
 };
