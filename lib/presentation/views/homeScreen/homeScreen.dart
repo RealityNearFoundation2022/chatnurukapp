@@ -7,7 +7,7 @@ import 'package:reality_near/core/framework/colors.dart';
 import 'package:reality_near/core/framework/globals.dart';
 import 'package:reality_near/domain/usecases/notifications/getNotifications.dart';
 import 'package:reality_near/presentation/bloc/menu/menu_bloc.dart';
-// import 'package:reality_near/presentation/views/noAR/noARSection.dart';
+import 'package:reality_near/presentation/views/noAR/noARSection.dart';
 import 'package:reality_near/presentation/views/mapScreen/mapScreen.dart';
 import 'package:reality_near/presentation/views/menuScreen/menuScreen.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       bottom: 20, top: ScreenWH(context).height * 0.17),
                   height: ScreenWH(context).height * 0.95,
                   width: ScreenWH(context).width,
-                  // child: const NoArSection(),
+                  child: const NoArSection(),
                 ),
                 //Header
                 header(),

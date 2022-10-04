@@ -202,7 +202,6 @@ class _FriendsSolicitudesDialogState extends State<FriendsSolicitudesDialog> {
     final users = lstUsers.where((user) {
       final username = (user.fullName ?? '').toLowerCase();
       final searchLower = searchUserController.text.toLowerCase();
-
       return username.contains(searchLower);
     }).toList();
 

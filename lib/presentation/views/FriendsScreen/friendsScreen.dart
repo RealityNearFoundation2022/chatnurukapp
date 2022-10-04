@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:reality_near/core/framework/colors.dart';
 import 'package:reality_near/core/framework/globals.dart';
+import 'package:reality_near/data/models/usersResponseModel.dart';
 import 'package:reality_near/domain/entities/user.dart';
 import 'package:reality_near/domain/usecases/contacts/getContacts.dart';
 import 'package:reality_near/generated/l10n.dart';
+import 'package:reality_near/presentation/bloc/socket/chat_service.dart';
+import 'package:reality_near/presentation/bloc/socket/users_service.dart';
 import 'package:reality_near/presentation/views/FriendsScreen/widgets/friendChat.dart';
 import 'package:reality_near/presentation/views/FriendsScreen/widgets/friendDialog.dart';
 import 'package:reality_near/presentation/views/chatRoomScreen/chatRoomScreen.dart';
@@ -21,7 +25,10 @@ class FriendScreen extends StatefulWidget {
 }
 
 class _FriendScreenState extends State<FriendScreen> {
+  // final userService = new UsersService();
+
   final TextEditingController _searchController = TextEditingController();
+  // List<UsersConnected> lstUsersConnected = [];
   List<User> lstContacts = [];
   bool _loading = true;
 
@@ -37,6 +44,7 @@ class _FriendScreenState extends State<FriendScreen> {
   initState() {
     super.initState();
     _getContacts();
+    // _loadUsersChat();
   }
 
   @override
@@ -160,11 +168,14 @@ class _FriendScreenState extends State<FriendScreen> {
   Widget chatList() {
     return ListView.builder(
       itemCount: lstContacts.length,
+      // itemCount: lstUsersConnected.length,
       itemBuilder: (context, index) {
         User contact = lstContacts[index];
+        // UsersConnected contact = lstUsersConnected[index];
         return ChatCard(
           photo: contact.avatar,
           name: contact.fullName,
+          // name: contact.iduser,
           message:
               "Habla Juan, estaba jugando un rato por larcomar y no creeras lo que hay por aquí",
           time: "17:46 P.M.",
@@ -181,14 +192,17 @@ class _FriendScreenState extends State<FriendScreen> {
           User contact = lstContacts[index];
           return GestureDetector(
             onTap: () {
-              // Navigator.pushNamed(context, ChatRoomScreen.routeName,
-              //     arguments: {
-              //       'name': getRandomName(),
-              //       'photo':
-              //           "https://source.unsplash.com/random/200x200?sig=$index",
-              //       'empty': true
-              //     });
-              Navigator.pushNamed(context, '/ChatSoonScreen');
+              // final chatService =
+              //     Provider.of<ChatService>(context, listen: false);
+              // chatService.userFrom = contact;
+              Navigator.pushNamed(context, ChatRoomScreen.routeName,
+                  arguments: {
+                    'name': getRandomName(),
+                    'photo':
+                        "https://source.unsplash.com/random/200x200?sig=$index",
+                    // 'empty': true
+                  });
+              // Navigator.pushNamed(context, '/ChatSoonScreen');
             },
             child: personCircle(contact),
           );
@@ -243,4 +257,10 @@ class _FriendScreenState extends State<FriendScreen> {
       ),
     );
   }
+
+  // _loadUsersChat() async {
+  //   // ignore: unnecessary_this
+  //   this.lstUsersConnected = await userService.getUsers();
+  //   // setState(() {});
+  // }
 }

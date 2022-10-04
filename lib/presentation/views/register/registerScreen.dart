@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:reality_near/core/framework/colors.dart';
 import 'package:reality_near/core/framework/globals.dart';
 import 'package:reality_near/generated/l10n.dart';
+import 'package:reality_near/presentation/bloc/socket/socket_service.dart';
 import 'package:reality_near/presentation/bloc/user/user_bloc.dart';
 import 'package:reality_near/presentation/views/login/widgets/button_with_states.dart';
 import 'package:reality_near/presentation/views/register/widgets/ConfirmDialog.dart';
@@ -21,9 +23,7 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
 //Variables
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
-
   final TextEditingController _userNameController = TextEditingController();
 
   List<bool> avatarSelect = [false, false, false];
@@ -40,6 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String pathSelectedAvatar = "";
   @override
   Widget build(BuildContext context) {
+    final socketService = Provider.of<SocketService>(context);
 //text-Form-EMAIL
     TxtForm _txtFormEmail = TxtForm(
       placeholder: S.current.Email,
@@ -75,6 +76,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           if (state.isLoggedIn) {
             persistData('usAvatar', pathSelectedAvatar);
             //Go to Home
+            socketService.connect();
             Navigator.pushNamedAndRemoveUntil(
                 context, '/home', (Route<dynamic> route) => false);
           }

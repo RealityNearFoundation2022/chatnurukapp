@@ -4,13 +4,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:reality_near/core/framework/colors.dart';
+import 'package:reality_near/core/framework/globals.dart';
+import 'package:reality_near/data/repository/userRepository.dart';
+import 'package:reality_near/domain/entities/user.dart';
+import 'package:reality_near/presentation/bloc/socket/chat_service.dart';
+import 'package:reality_near/presentation/bloc/socket/socket_service.dart';
 import 'package:reality_near/presentation/views/chatRoomScreen/widgets/chatUserDetail.dart';
 
 class ChatRoomScreen extends StatefulWidget {
 //Variable
   static String routeName = "/chatRoomScreen";
-
   const ChatRoomScreen({Key key}) : super(key: key);
 
   @override
@@ -18,19 +23,41 @@ class ChatRoomScreen extends StatefulWidget {
 }
 
 class _ChatRoomScreenState extends State<ChatRoomScreen> {
+  ChatService chatService;
+  SocketService socketService;
+
 //Variables
+  User user = User();
   List<types.Message> _messages = [];
   final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
 //Inicio de la pantalla
   @override
   void initState() {
-    super.initState();
+    // super.initState();
+    chatService = Provider.of<ChatService>(context, listen: false);
+    socketService = Provider.of<SocketService>(context, listen: false);
+    UserRepository().getMyData().then((value) => value.fold(
+          (failure) => print(failure),
+          (success) => {
+            persistData('username', success.fullName),
+            persistData('userId', success.id.toString()),
+            setState(() {
+              user = success;
+            }),
+            persistData('usAvatar', user.avatar)
+          },
+        ));
     _loadMessages();
   }
 
   void _addMessage(types.Message message) {
     setState(() {
       _messages.insert(0, message);
+    });
+    socketService.emit('message-personal', {
+      'from': user.id.toString(),
+      'to': "215",
+      'message': message,
     });
   }
 
@@ -39,7 +66,6 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     final messages = (jsonDecode(response) as List)
         .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
         .toList();
-
     setState(() {
       _messages = messages;
     });
@@ -50,11 +76,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     types.PreviewData previewData,
   ) {
     final index = _messages.indexWhere((element) => element.id == message.id);
-    // final updatedMessage = _messages[index].copyWith(previewData: previewData);
+    final updatedMessage = _messages[index].copyWith();
 
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        // _messages[index] = updatedMessage;
+        _messages[index] = updatedMessage;
       });
     });
   }
@@ -72,13 +98,14 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // final chatService = Provider.of<ChatService>(context);
     //variables como argumentos
     final args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
-    if (args['empty']) {
-      _messages.clear();
-    }
+    // if (args['empty']) {
+    //   _messages.clear();
+    // }
 
     return Scaffold(
       appBar: AppBar(

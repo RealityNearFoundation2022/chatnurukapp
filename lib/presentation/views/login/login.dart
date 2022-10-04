@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:reality_near/core/framework/colors.dart';
 import 'package:reality_near/core/framework/globals.dart';
 import 'package:reality_near/generated/l10n.dart';
+import 'package:reality_near/presentation/bloc/socket/socket_service.dart';
 import 'package:reality_near/presentation/bloc/menu/menu_bloc.dart';
 import 'package:reality_near/presentation/bloc/user/user_bloc.dart';
 import 'package:reality_near/presentation/views/login/widgets/button_with_states.dart';
@@ -11,6 +13,7 @@ import 'package:reality_near/presentation/widgets/dialogs/infoDialog.dart';
 import 'package:reality_near/presentation/widgets/dialogs/syncWalletDialog.dart';
 import 'package:reality_near/presentation/widgets/forms/textForm.dart';
 import 'package:reality_near/presentation/widgets/others/snackBar.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 class Login extends StatelessWidget {
   Login({Key key}) : super(key: key);
@@ -21,6 +24,7 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final socketService = Provider.of<SocketService>(context);
 //Variables
     //Argumentos
     final args =
@@ -49,6 +53,7 @@ class Login extends StatelessWidget {
       listener: (context, state) async {
         if (state is UserLoggedInState) {
           getPermissions();
+          socketService.connect();
           SyncWalletDialog(
             onLogin: () {
               Navigator.pushNamedAndRemoveUntil(

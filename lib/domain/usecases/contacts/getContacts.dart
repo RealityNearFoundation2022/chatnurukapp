@@ -1,5 +1,6 @@
 import 'package:reality_near/core/framework/globals.dart';
 import 'package:reality_near/data/models/contactModel.dart';
+// import 'package:reality_near/data/models/usersResponseModel.dart';
 import 'package:reality_near/data/repository/contactRepository.dart';
 import 'package:reality_near/data/repository/userRepository.dart';
 import 'package:reality_near/domain/entities/user.dart';
@@ -27,6 +28,7 @@ class GetContactsUseCase {
     //obtenemos usuario por ID
     for (var contact in lstContactRequest) {
       User user = User();
+
       await _userRepo
           .getUserById(contact.contactId.toString())
           .then((value) => value.fold(
@@ -34,7 +36,6 @@ class GetContactsUseCase {
                 (success) => {user = success},
               ));
       user.infContact = contact;
-
       //remplazamos usuario en la lista de usuarios
       lstUserRequest.removeWhere((element) => element.id == user.id);
       lstUserRequest.add(user);

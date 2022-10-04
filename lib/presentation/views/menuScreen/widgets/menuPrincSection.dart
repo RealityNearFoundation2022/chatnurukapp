@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:reality_near/presentation/bloc/socket/socket_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -137,26 +139,45 @@ class _MenuPrincSectionState extends State<MenuPrincSection> {
   }
 
   Widget personCircle() {
+    final socketService = Provider.of<SocketService>(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: CircleAvatar(
-        radius: 27.w,
-        child: usAvatar.isNotEmpty
-            ? Image.asset(
-                usAvatar,
-                fit: BoxFit.cover,
-              )
-            : Center(
-                child: LoadingAnimationWidget.dotsTriangle(
-                  color: Colors.white,
-                  size: ScreenWH(context).width * 0.2,
-                ),
-              ),
+      child: Stack(
+        children: [
+          CircleAvatar(
+            radius: 27.w,
+            child: usAvatar.isNotEmpty
+                ? Image.asset(
+                    usAvatar,
+                    fit: BoxFit.cover,
+                  )
+                : Center(
+                    child: LoadingAnimationWidget.dotsTriangle(
+                      color: Colors.white,
+                      size: ScreenWH(context).width * 0.2,
+                    ),
+                  ),
+          ),
+          Positioned(
+            bottom: 2,
+            right: 2,
+            child: Container(
+              height: 20,
+              width: 20,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(100),
+                  color: socketService.serverStatus == ServerStatus.Online
+                      ? Colors.green
+                      : Colors.red),
+            ),
+          )
+        ],
       ),
     );
   }
 
   Widget bottomSection(BuildContext context) {
+    final socketService = Provider.of<SocketService>(context);
     return Column(
       children: [
         walletId.isEmpty
@@ -203,6 +224,7 @@ class _MenuPrincSectionState extends State<MenuPrincSection> {
                       onTap: () {
                         BlocProvider.of<UserBloc>(context, listen: false)
                             .add(UserLogOutEvent());
+                        socketService.disconnect();
                         Navigator.pushNamedAndRemoveUntil(
                             context, '/firstScreen', ModalRoute.withName('/'));
                       },

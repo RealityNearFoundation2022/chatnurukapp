@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:reality_near/core/framework/colors.dart';
 import 'package:reality_near/core/framework/globals.dart';
 import 'package:reality_near/generated/l10n.dart';
+import 'package:provider/provider.dart';
+import 'package:reality_near/presentation/bloc/socket/socket_service.dart';
 import 'package:reality_near/presentation/bloc/user/user_bloc.dart';
 import 'package:reality_near/presentation/views/FriendsScreen/friendsScreen.dart';
 import 'package:reality_near/presentation/views/configurationScreen/widgets/permisosDialog.dart';
@@ -41,6 +43,8 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final socketService = Provider.of<SocketService>(context);
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -93,6 +97,7 @@ class _ConfigurationScreenState extends State<ConfigurationScreen> {
                 onTap: () {
                   BlocProvider.of<UserBloc>(context, listen: false)
                       .add(UserLogOutEvent());
+                  socketService.disconnect();
                   Navigator.pushNamedAndRemoveUntil(
                       context, '/firstScreen', ModalRoute.withName('/'));
                 },
