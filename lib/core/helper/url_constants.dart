@@ -3,6 +3,7 @@ const API_REALITY_NEAR = "https://api.realitynear.org/api/v1/";
 const NEAR_RPC_TESTNET = "https://rpc.testnet.near.org";
 const NEAR_RPC_MAINNET = "https://rpc.mainnet.near.org";
 const CHAT_NURUK = "http://localhost:3000/chat/";
+const CHAT_NURUK_PROD = "https://api-realitynearorg-chat.herokuapp.com/chat/";
 // const MAPBOX_ACCESS_TOKEN = "sk.eyJ1IjoicmVhbGl0eS1uZWFyLWRldnMiLCJhIjoiY2w1cjN5enZ2MDcxazNjb2VlOGU5ZXpsZyJ9.BeuV7flx6u-odZyySFJNmQ";
 const MAPBOX_ACCESS_TOKEN =
     "pk.eyJ1IjoicmVhbGl0eS1uZWFyLWRldnMiLCJhIjoiY2w1cjZucXgzMjNvNzNlbndhbjhrYzBxNSJ9.H1Qazb-WKbVB3necwmEFqQ";

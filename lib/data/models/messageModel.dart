@@ -1,61 +1,65 @@
+// To parse this JSON data, do
+//
+//     final messageResponse = messageResponseFromJson(jsonString);
+
 import 'dart:convert';
 
-MensajesResponse mensajesResponseFromJson(String str) =>
-    MensajesResponse.fromJson(json.decode(str));
+MessageResponse messageResponseFromJson(String str) =>
+    MessageResponse.fromJson(json.decode(str));
 
-String mensajesResponseToJson(MensajesResponse data) =>
+String messageResponseToJson(MessageResponse data) =>
     json.encode(data.toJson());
 
-class MensajesResponse {
-  MensajesResponse({
+class MessageResponse {
+  MessageResponse({
     this.ok,
-    this.mensajes,
+    this.messages,
   });
 
   bool ok;
-  List<Mensaje> mensajes;
+  List<Message> messages;
 
-  factory MensajesResponse.fromJson(Map<String, dynamic> json) =>
-      MensajesResponse(
+  factory MessageResponse.fromJson(Map<String, dynamic> json) =>
+      MessageResponse(
         ok: json["ok"],
-        mensajes: List<Mensaje>.from(
-            json["mensajes"].map((x) => Mensaje.fromJson(x))),
+        messages: List<Message>.from(
+            json["messages"].map((x) => Message.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "ok": ok,
-        "mensajes": List<dynamic>.from(mensajes.map((x) => x.toJson())),
+        "messages": List<dynamic>.from(messages.map((x) => x.toJson())),
       };
 }
 
-class Mensaje {
-  Mensaje({
-    this.from,
-    this.to,
+class Message {
+  Message({
+    this.myId,
+    this.messagesTo,
     this.message,
-    this.createdAt,
+    this.createAt,
     this.updatedAt,
   });
 
-  String from;
-  String to;
+  String myId;
+  String messagesTo;
   String message;
-  DateTime createdAt;
+  DateTime createAt;
   DateTime updatedAt;
 
-  factory Mensaje.fromJson(Map<String, dynamic> json) => Mensaje(
-        from: json["from"],
-        to: json["to"],
+  factory Message.fromJson(Map<String, dynamic> json) => Message(
+        myId: json["myId"],
+        messagesTo: json["messagesTo"],
         message: json["message"],
-        createdAt: DateTime.parse(json["createdAt"]),
+        createAt: DateTime.parse(json["createAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "from": from,
-        "to": to,
+        "myId": myId,
+        "messagesTo": messagesTo,
         "message": message,
-        "createdAt": createdAt.toIso8601String(),
+        "createAt": createAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
       };
 }
