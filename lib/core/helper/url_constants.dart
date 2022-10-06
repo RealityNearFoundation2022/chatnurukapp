@@ -1,5 +1,6 @@
 const REGISTER_NEAR_WALLET = "https://wallet.near.org/create";
 const API_REALITY_NEAR = "https://api.realitynear.org/api/v1/";
+const API_REALITY_NEAR_IMGs = "https://api.realitynear.org";
 const NEAR_RPC_TESTNET = "https://rpc.testnet.near.org";
 const NEAR_RPC_MAINNET = "https://rpc.mainnet.near.org";
 const CHAT_NURUK = "http://localhost:3000/chat/";

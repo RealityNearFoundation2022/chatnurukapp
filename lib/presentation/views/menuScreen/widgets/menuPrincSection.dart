@@ -31,7 +31,6 @@ class _MenuPrincSectionState extends State<MenuPrincSection> {
   @override
   void initState() {
     super.initState();
-
     getPersistData('username').then((value) => {
           setState(() {
             username = value;
@@ -224,7 +223,6 @@ class _MenuPrincSectionState extends State<MenuPrincSection> {
                       onTap: () {
                         BlocProvider.of<UserBloc>(context, listen: false)
                             .add(UserLogOutEvent());
-                        socketService.disconnect();
                         Navigator.pushNamedAndRemoveUntil(
                             context, '/firstScreen', ModalRoute.withName('/'));
                       },
