@@ -15,6 +15,7 @@ import 'package:reality_near/presentation/views/FriendsScreen/widgets/friendDial
 import 'package:reality_near/presentation/views/chatRoomScreen/chatRoomScreen.dart';
 import 'package:reality_near/presentation/widgets/forms/searchBar.dart';
 
+//prbando
 class FriendScreen extends StatefulWidget {
   const FriendScreen({Key key}) : super(key: key);
   //Variables
