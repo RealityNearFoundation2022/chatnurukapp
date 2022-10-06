@@ -15,6 +15,7 @@ import 'package:reality_near/presentation/views/FriendsScreen/widgets/friendDial
 import 'package:reality_near/presentation/views/chatRoomScreen/chatRoomScreen.dart';
 import 'package:reality_near/presentation/widgets/forms/searchBar.dart';
 
+//prbando
 class FriendScreen extends StatefulWidget {
   const FriendScreen({Key key}) : super(key: key);
   //Variables
@@ -168,17 +169,15 @@ class _FriendScreenState extends State<FriendScreen> {
   Widget chatList() {
     return ListView.builder(
       itemCount: lstContacts.length,
-      // itemCount: lstUsersConnected.length,
       itemBuilder: (context, index) {
         User contact = lstContacts[index];
-        // UsersConnected contact = lstUsersConnected[index];
         return ChatCard(
           photo: contact.avatar,
           name: contact.fullName,
           // name: contact.iduser,
           message:
-              "Habla Juan, estaba jugando un rato por larcomar y no creeras lo que hay por aquí",
-          time: "17:46 P.M.",
+              "Habla Tita, estaba jugando un rato por larcomar y no creeras lo que hay por aquí",
+          time: "17:56 P.M.",
         );
       },
     );
@@ -192,6 +191,7 @@ class _FriendScreenState extends State<FriendScreen> {
           User contact = lstContacts[index];
           return GestureDetector(
             onTap: () {
+              print('probando');
               // final chatService =
               //     Provider.of<ChatService>(context, listen: false);
               // chatService.userFrom = contact;
@@ -210,6 +210,8 @@ class _FriendScreenState extends State<FriendScreen> {
   }
 
   Widget personCircle(User contact) {
+    final chatService = Provider.of<ChatService>(context, listen: false);
+    chatService.userTo = contact;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(

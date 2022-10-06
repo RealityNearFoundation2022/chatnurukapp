@@ -16,6 +16,7 @@ import '../../../data/repository/userRepository.dart';
 import '../../../domain/entities/user.dart';
 import '../../widgets/dialogs/PermissionsDialog.dart';
 
+// probando
 class HomeScreen extends StatefulWidget {
   static String routeName = "/home";
   const HomeScreen({Key key}) : super(key: key);
