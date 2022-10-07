@@ -4,11 +4,20 @@ import 'package:reality_near/core/framework/globals.dart';
 import 'package:reality_near/presentation/views/chatRoomScreen/chatRoomScreen.dart';
 
 class ChatCard extends StatelessWidget {
+  final String uid;
   final String photo;
   final String name;
   final String message;
   final String time;
-  const ChatCard({Key key, this.photo, this.name, this.message, this.time})
+  final bool connect;
+  const ChatCard(
+      {Key key,
+      this.uid,
+      this.photo,
+      this.name,
+      this.message,
+      this.time,
+      this.connect})
       : super(key: key);
 
   @override
@@ -16,19 +25,38 @@ class ChatCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Navigator.pushNamed(context, '/ChatSoonScreen');
-        Navigator.pushNamed(context, ChatRoomScreen.routeName,
-            arguments: {'name': name, 'photo': photo, 'empty': false});
+        Navigator.pushNamed(context, ChatRoomScreen.routeName, arguments: {
+          'contactId': uid,
+          'name': name,
+          'photo': photo,
+          'empty': false
+        });
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 35, vertical: 10),
         child: Row(
           children: [
-            CircleAvatar(
-              radius: 30,
-              child: Image.asset(
-                photo,
-                fit: BoxFit.cover,
-              ),
+            Stack(
+              children: [
+                CircleAvatar(
+                  radius: 30,
+                  child: Image.asset(
+                    photo,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    width: 15,
+                    height: 15,
+                    decoration: BoxDecoration(
+                        color: connect ?? false ? Colors.green : Colors.red,
+                        borderRadius: BorderRadius.circular(100)),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(width: 20),
             Expanded(

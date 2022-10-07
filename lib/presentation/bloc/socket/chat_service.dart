@@ -11,8 +11,7 @@ class ChatService with ChangeNotifier {
 
   Future<List<Message>> getChat() async {
     String token = await getPersistData("userToken");
-    final String baseUrl = CHAT_NURUK + "messages";
-    final url = baseUrl;
+    const url = CHAT_NURUK_PROD + "messages";
     final response = await http.get(Uri.parse(url), headers: {
       'Content-Type': 'application/json',
       'token': token,

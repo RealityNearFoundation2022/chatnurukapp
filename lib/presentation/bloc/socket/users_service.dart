@@ -9,8 +9,7 @@ class UsersService {
   Future<List<UsersConnected>> getUsers() async {
     try {
       String token = await getPersistData("userToken");
-      final String baseUrl = CHAT_NURUK + "users";
-      final url = baseUrl;
+      const String url = CHAT_NURUK_PROD + "users";
       final response = await http.get(Uri.parse(url), headers: {
         'Content-Type': 'application/json',
         'token': token,

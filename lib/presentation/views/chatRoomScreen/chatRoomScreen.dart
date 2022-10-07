@@ -7,8 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:reality_near/core/framework/colors.dart';
 import 'package:reality_near/core/framework/globals.dart';
-import 'package:reality_near/data/repository/userRepository.dart';
-import 'package:reality_near/domain/entities/user.dart';
 import 'package:reality_near/presentation/bloc/socket/chat_service.dart';
 import 'package:reality_near/presentation/bloc/socket/socket_service.dart';
 import 'package:reality_near/presentation/views/chatRoomScreen/widgets/chatUserDetail.dart';
@@ -27,40 +25,44 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   SocketService socketService;
 
 //Variables
-  User user = User();
+  // User user = User();
   List<types.Message> _messages = [];
   final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
+  String userId = '';
+  String toUID = '';
 //Inicio de la pantalla
   @override
   void initState() {
-    // super.initState();
+    super.initState();
+    getCurrentUserId();
     chatService = Provider.of<ChatService>(context, listen: false);
     socketService = Provider.of<SocketService>(context, listen: false);
-    UserRepository().getMyData().then((value) => value.fold(
-          (failure) => print(failure),
-          (success) => {
-            persistData('username', success.fullName),
-            persistData('userId', success.id.toString()),
-            setState(() {
-              user = success;
-            }),
-            persistData('usAvatar', user.avatar)
-          },
-        ));
     _loadMessages();
+  }
+
+  getCurrentUserId() async {
+    getPersistData('userId').then((value) {
+      setState(() {
+        userId = value;
+      });
+    });
   }
 
   void _addMessage(types.Message message) {
     setState(() {
       _messages.insert(0, message);
     });
-    socketService.emit('message-personal', {
-      'from': '235',
-      'to': '217',
-      'message': message,
-    });
+    // SocketService().emit();
+    Map messageMap = {
+      'from': userId,
+      'to': toUID,
+      'message': "message",
+    };
+    // socket.emit('sendNewMessage', messageMap);
+    SocketService().emit('message-personal', messageMap);
   }
 
+  //Aqui CAMBIAR
   void _loadMessages() async {
     final response = await rootBundle.loadString('assets/messages.json');
     final messages = (jsonDecode(response) as List)
@@ -102,6 +104,9 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     //variables como argumentos
     final args =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    setState(() {
+      toUID = args['contactId'];
+    });
 
     // if (args['empty']) {
     //   _messages.clear();
@@ -140,7 +145,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
                 const SizedBox(width: 15),
                 CircleAvatar(
                   radius: 25,
-                  backgroundImage: NetworkImage(args['photo']),
+                  backgroundImage: AssetImage(args['photo']),
                 ),
               ],
             ),
@@ -168,7 +173,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
           children: [
             CircleAvatar(
               radius: 50,
-              backgroundImage: NetworkImage(args['photo']),
+              backgroundImage: AssetImage(args['photo']),
             ),
             const SizedBox(height: 20),
             Text(

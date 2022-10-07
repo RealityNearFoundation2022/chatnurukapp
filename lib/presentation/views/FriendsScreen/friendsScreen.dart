@@ -26,10 +26,10 @@ class FriendScreen extends StatefulWidget {
 }
 
 class _FriendScreenState extends State<FriendScreen> {
-  // final userService = new UsersService();
+  final userService = UsersService();
 
   final TextEditingController _searchController = TextEditingController();
-  // List<UsersConnected> lstUsersConnected = [];
+  List<UsersConnected> lstUsersConnected = [];
   List<User> lstContacts = [];
   bool _loading = true;
 
@@ -37,7 +37,7 @@ class _FriendScreenState extends State<FriendScreen> {
     var response = await GetContactsUseCase().call();
     setState(() {
       lstContacts = response;
-      _loading = false;
+      // _loading = false;
     });
   }
 
@@ -45,7 +45,7 @@ class _FriendScreenState extends State<FriendScreen> {
   initState() {
     super.initState();
     _getContacts();
-    // _loadUsersChat();
+    _loadUsersChat();
   }
 
   @override
@@ -172,12 +172,17 @@ class _FriendScreenState extends State<FriendScreen> {
       itemBuilder: (context, index) {
         User contact = lstContacts[index];
         return ChatCard(
+          uid: contact.id.toString(),
           photo: contact.avatar,
           name: contact.fullName,
-          // name: contact.iduser,
           message:
               "Habla Tita, estaba jugando un rato por larcomar y no creeras lo que hay por aquí",
           time: "17:56 P.M.",
+          connect: lstUsersConnected
+              .firstWhere((element) => element.iduser == contact.id.toString(),
+                  orElse: () =>
+                      UsersConnected(iduser: null, uid: null, online: false))
+              .online,
         );
       },
     );
@@ -260,9 +265,12 @@ class _FriendScreenState extends State<FriendScreen> {
     );
   }
 
-  // _loadUsersChat() async {
-  //   // ignore: unnecessary_this
-  //   this.lstUsersConnected = await userService.getUsers();
-  //   // setState(() {});
-  // }
+  _loadUsersChat() async {
+    userService.getUsers().then((value) {
+      setState(() {
+        lstUsersConnected = value;
+        _loading = false;
+      });
+    });
+  }
 }
