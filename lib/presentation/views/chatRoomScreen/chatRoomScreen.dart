@@ -57,7 +57,7 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     socketService.emit('message-personal', {
       'from': userId,
       'to': toUID,
-      'message': message,
+      'message': "probando",
     });
   }
 
