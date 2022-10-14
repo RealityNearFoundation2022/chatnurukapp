@@ -24,6 +24,8 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
   ChatService chatService;
   SocketService socketService;
 
+  // List<ChatMessage> _messages = [];
+
 //Variables
   // User user = User();
   List<types.Message> _messages = [];
@@ -52,14 +54,11 @@ class _ChatRoomScreenState extends State<ChatRoomScreen> {
     setState(() {
       _messages.insert(0, message);
     });
-    // SocketService().emit();
-    Map messageMap = {
+    socketService.emit('message-personal', {
       'from': userId,
       'to': toUID,
-      'message': "message",
-    };
-    // socket.emit('sendNewMessage', messageMap);
-    SocketService().emit('message-personal', messageMap);
+      'message': message,
+    });
   }
 
   //Aqui CAMBIAR

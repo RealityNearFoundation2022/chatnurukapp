@@ -9,14 +9,15 @@ import 'package:reality_near/domain/entities/user.dart';
 class ChatService with ChangeNotifier {
   User userTo;
 
-  Future<List<Message>> getChat() async {
+  Future<List<Message>> getChat(String userToId) async {
     String token = await getPersistData("userToken");
-    const url = CHAT_NURUK_PROD + "messages";
+    final String baseUrl = CHAT_NURUK;
+    final url = baseUrl + "messages/" + userToId;
     final response = await http.get(Uri.parse(url), headers: {
       'Content-Type': 'application/json',
       'token': token,
     });
-    final messageResponse = messageResponseFromJson(response.body);
-    return messageResponse.messages;
+    final messageModel = messageModelFromJson(response.body);
+    return messageModel.messages;
   }
 }

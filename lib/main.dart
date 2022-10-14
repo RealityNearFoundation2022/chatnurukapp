@@ -40,7 +40,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    SocketService().connect();
   }
 
   // This widget is the root of your application.

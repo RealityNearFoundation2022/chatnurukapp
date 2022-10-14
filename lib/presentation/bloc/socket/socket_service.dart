@@ -12,14 +12,14 @@ class SocketService with ChangeNotifier {
 
   ServerStatus get serverStatus => _serverStatus;
 
-  IO.Socket get socket => _socket;
-  Function get emit => _socket.emit;
+  IO.Socket get socket => this._socket;
+  Function get emit => this._socket.emit;
 
   void connect() async {
     final String token = await getPersistData("userToken");
 
     // Dart client
-    _socket = IO.io(Environment.socketUrl, {
+    this._socket = IO.io(Environment.socketUrl, {
       'transports': ['websocket'],
       'autoConnect': true,
       'forceNew': true,
@@ -29,18 +29,18 @@ class SocketService with ChangeNotifier {
       'extraHeaders': {'tokenUser': token}
     });
 
-    _socket.on('connect', (_) {
+    this._socket.on('connect', (_) {
       _serverStatus = ServerStatus.Online;
       notifyListeners();
     });
 
-    _socket.on('disconnect', (_) {
+    this._socket.on('disconnect', (_) {
       _serverStatus = ServerStatus.Offline;
       notifyListeners();
     });
   }
 
   void disconnect() {
-    _socket.disconnect();
+    this._socket.disconnect();
   }
 }

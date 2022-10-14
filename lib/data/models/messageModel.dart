@@ -1,16 +1,16 @@
 // To parse this JSON data, do
-// final messageResponse = messageResponseFromJson(jsonString);
+//
+//     final messageModel = messageModelFromJson(jsonString);
 
 import 'dart:convert';
 
-MessageResponse messageResponseFromJson(String str) =>
-    MessageResponse.fromJson(json.decode(str));
+MessageModel messageModelFromJson(String str) =>
+    MessageModel.fromJson(json.decode(str));
 
-String messageResponseToJson(MessageResponse data) =>
-    json.encode(data.toJson());
+String messageModelToJson(MessageModel data) => json.encode(data.toJson());
 
-class MessageResponse {
-  MessageResponse({
+class MessageModel {
+  MessageModel({
     this.ok,
     this.messages,
   });
@@ -18,8 +18,7 @@ class MessageResponse {
   bool ok;
   List<Message> messages;
 
-  factory MessageResponse.fromJson(Map<String, dynamic> json) =>
-      MessageResponse(
+  factory MessageModel.fromJson(Map<String, dynamic> json) => MessageModel(
         ok: json["ok"],
         messages: List<Message>.from(
             json["messages"].map((x) => Message.fromJson(x))),
@@ -33,30 +32,30 @@ class MessageResponse {
 
 class Message {
   Message({
-    this.myId,
-    this.messagesTo,
+    this.from,
+    this.to,
     this.message,
     this.createAt,
     this.updatedAt,
   });
 
-  String myId;
-  String messagesTo;
+  String from;
+  String to;
   String message;
   DateTime createAt;
   DateTime updatedAt;
 
   factory Message.fromJson(Map<String, dynamic> json) => Message(
-        myId: json["myId"],
-        messagesTo: json["messagesTo"],
+        from: json["from"],
+        to: json["to"],
         message: json["message"],
         createAt: DateTime.parse(json["createAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "myId": myId,
-        "messagesTo": messagesTo,
+        "from": from,
+        "to": to,
         "message": message,
         "createAt": createAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
